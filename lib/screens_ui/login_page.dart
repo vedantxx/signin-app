@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:signinapp/screens_ui/signup_page.dart';
+import 'package:signinapp/services/authservice.dart';
 
 class LoginPage extends StatefulWidget {
   // const LoginPage({Key key}) : super(key: key);
@@ -23,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   String validateEmail(String value){
-    String  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    Pattern  pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regex = new RegExp(pattern);
     if(!regex.hasMatch(value))
       return 'Enter a valid email';
@@ -37,6 +39,11 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage("assets/bgimgsignin.jpg"),
+              fit: BoxFit.cover
+          ),
+        ),
         child: Form(
           key: formKey,
           child: _buildLoginForm(),
@@ -59,6 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                     "Hello",style: TextStyle(
                     fontSize: 60,
                     fontFamily: 'Trueno',
+                    color: Colors.white,
                   ),
                   ),
                   Positioned(
@@ -67,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                     "There", style: TextStyle(
                     fontSize: 60,
                         fontFamily: 'Trueno',
+                        color: Colors.white,
                   ),
                   ),
                   ),
@@ -86,14 +95,19 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
-            SizedBox(height: 24,),
+            SizedBox(height: 200,),
             //email
             TextFormField(
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelText: 'Email',
+
+
+
                 labelStyle: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey.withOpacity(0.5),
+                  // color: Colors.white.withOpacity(0.5),
+                  color: Colors.white,
                 ),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -101,19 +115,39 @@ class _LoginPageState extends State<LoginPage> {
                   ),
 
                 ),
+
               ),
               onChanged: (value) {
                 this.email = value;
               },
-              validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value),
+              // validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value),
+                validator: (value){
+                  Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                  RegExp regex = new RegExp(pattern);
+                  // Null check
+                  if(value.isEmpty){
+                    return 'please enter your email';
+                  }
+                  // Valid email formatting check
+                  else if(!regex.hasMatch(value)){
+                    return 'Enter valid email address';
+                  }
+                  // success condition
+                  else {
+                    email = value;
+                  }
+                  return null;
+                }
             ),
             //password
             TextFormField(
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelText: 'Password',
                 labelStyle: TextStyle(
                   fontSize: 12,
-                  color: Colors.grey.withOpacity(0.5),
+                  // color: Colors.grey.withOpacity(0.5),
+                  color: Colors.white,
                 ),
                 focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
@@ -152,7 +186,9 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 48,),
             GestureDetector(
               onTap: () {
-
+                if(checkFields()){
+                  AuthService().signIn(email, password, context);
+                }
               },
               child: Container(
                 height: 48,
@@ -180,7 +216,8 @@ class _LoginPageState extends State<LoginPage> {
               },
               child: Container(
                 height: 48,
-                color: Colors.transparent,
+
+
 
                 child: Container(
                   decoration: BoxDecoration(
@@ -189,7 +226,8 @@ class _LoginPageState extends State<LoginPage> {
                       style: BorderStyle.solid,
                       width: 2,
                     ),
-                    color: Colors.transparent,
+                    // color: Colors.transparent,
+                      color: Colors.white30,
                     borderRadius: BorderRadius.circular(24)
                   ),
                   child: Row(
@@ -216,11 +254,13 @@ class _LoginPageState extends State<LoginPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Don't have an account?"),
+                Text("Don't have an account?",style: TextStyle(
+                  color: Colors.white,
+                ),),
                 SizedBox(width: 4,),
                 InkWell(
                   onTap: () {
-
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpPage()));
                   },
                   child: Text('Register now', style: TextStyle(
                     color: Colors.green,
