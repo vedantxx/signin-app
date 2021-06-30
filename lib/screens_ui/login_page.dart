@@ -15,13 +15,15 @@ class _LoginPageState extends State<LoginPage> {
 
   String email, password;
 
-  checkFields(){
+  bool checkFields(){
     final form = formKey.currentState;
     if(form.validate()) {
       form.save();
       return true;
     }
-    return false;
+    else {
+      return false;
+    }
   }
 
   String validateEmail(String value){
@@ -119,25 +121,26 @@ class _LoginPageState extends State<LoginPage> {
               ),
               onChanged: (value) {
                 this.email = value;
+
               },
               // validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value),
-                validator: (value){
-                  Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                  RegExp regex = new RegExp(pattern);
-                  // Null check
-                  if(value.isEmpty){
-                    return 'please enter your email';
-                  }
-                  // Valid email formatting check
-                  else if(!regex.hasMatch(value)){
-                    return 'Enter valid email address';
-                  }
-                  // success condition
-                  else {
-                    email = value;
-                  }
-                  return null;
-                }
+              //   validator: (value){
+              //     String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+              //     RegExp regex = new RegExp(pattern);
+              //     // Null check
+              //     if(value.isEmpty){
+              //       return 'please enter your email';
+              //     }
+              //     // Valid email formatting check
+              //     else if(!regex.hasMatch(value)){
+              //       return 'Enter valid email address';
+              //     }
+              //     // success condition
+              //     else {
+              //       email = value;
+              //     }
+              //     return null;
+              //   }
             ),
             //password
             TextFormField(
@@ -186,6 +189,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 48,),
             GestureDetector(
               onTap: () {
+                print(email.trim());
                 if(checkFields()){
                   AuthService().signIn(email, password, context);
                 }

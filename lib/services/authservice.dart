@@ -21,20 +21,20 @@ class AuthService{
     );
   }
 
-  signOut() {
-    FirebaseAuth.instance.signOut();
+  signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 
-  signIn(String email, String password, context) {
-    FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password).then((val) {
+  signIn(String email, String password, context) async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(email: email.trim(), password: password.trim()).then((val) {
       print('sign in');
     }).catchError((e) {
       ErrorHandler().errorDialog(context, e);
     });
   }
 
-  signUp(String email,String password) {
-    return FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+  signUp(String email,String password) async {
+    return await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.trim(), password: password.trim());
 
   }
 }

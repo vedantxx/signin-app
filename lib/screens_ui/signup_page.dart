@@ -12,6 +12,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
 
   final formKey = new GlobalKey<FormState>();
+  TextEditingController textEditingController = new TextEditingController();
 
   String email, password;
 
@@ -21,11 +22,13 @@ class _SignUpPageState extends State<SignUpPage> {
       form.save();
       return true;
     }
-    return false;
+    else {
+      return false;
+    }
   }
 
   String validateEmail(String value){
-    Pattern  pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    Pattern  pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     RegExp regex = new RegExp(pattern);
     if(!regex.hasMatch(value))
       return 'Enter a valid email';
@@ -98,10 +101,10 @@ class _SignUpPageState extends State<SignUpPage> {
           SizedBox(height: 200,),
           //email
           TextFormField(
+            controller: textEditingController,
             style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               labelText: 'Email',
-
 
 
               labelStyle: TextStyle(
@@ -120,24 +123,24 @@ class _SignUpPageState extends State<SignUpPage> {
             onChanged: (value) {
               this.email = value;
             },
-            // validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value),
-              validator: (value){
-                Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-                RegExp regex = new RegExp(pattern);
-                // Null check
-                if(value.isEmpty){
-                  return 'please enter your email';
-                }
-                // Valid email formatting check
-                else if(!regex.hasMatch(value)){
-                  return 'Enter valid email address';
-                }
-                // success condition
-                else {
-                  email = value;
-                }
-                return null;
-              }
+            validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value),
+            //   validator: (value){
+            //     Pattern pattern = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+            //     RegExp regex = new RegExp(pattern);
+            //     // Null check
+            //     if(value.isEmpty){
+            //       return 'please enter your email';
+            //     }
+            //     // Valid email formatting check
+            //     else if(!regex.hasMatch(value)){
+            //       return 'Enter valid email address';
+            //     }
+            //     // success condition
+            //     else {
+            //       email = value;
+            //     }
+            //     return null;
+            //   }
           ),
           //password
           TextFormField(
@@ -157,10 +160,10 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
             obscureText: true,
-            onChanged: (value) {
-              this.password = value;
+            onChanged: (value2) {
+              this.password = value2;
             },
-            validator: (value) => value.isEmpty ? 'Password is required' : null,
+            validator: (value2) => value2.isEmpty ? 'Password is required' : null,
           ),
           // SizedBox(height: 4,),
           // GestureDetector(
@@ -186,6 +189,7 @@ class _SignUpPageState extends State<SignUpPage> {
           SizedBox(height: 48,),
           GestureDetector(
             onTap: () {
+              print(email);
               if(checkFields()){
                 AuthService().signUp(email, password).then((userCreds) {
                   Navigator.of(context).pop();
