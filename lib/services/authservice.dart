@@ -1,4 +1,4 @@
-import 'dart:math';
+
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,8 +25,8 @@ class AuthService{
     await FirebaseAuth.instance.signOut();
   }
 
-  signIn(String email, String password, context) async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(email: email.trim(), password: password.trim()).then((val) {
+  signIn(String email, String password, context) {
+    FirebaseAuth.instance.signInWithEmailAndPassword(email: email.trim(), password: password.trim()).then((val) {
       print('sign in');
     }).catchError((e) {
       ErrorHandler().errorDialog(context, e);
@@ -36,5 +36,9 @@ class AuthService{
   signUp(String email,String password) async {
     return await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email.trim(), password: password.trim());
 
+  }
+
+  resetPasswordLind(String email) async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email.trim());
   }
 }

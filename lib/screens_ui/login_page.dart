@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:signinapp/screens_ui/reset_password.dart';
 import 'package:signinapp/screens_ui/signup_page.dart';
 import 'package:signinapp/services/authservice.dart';
 
@@ -103,9 +104,6 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 labelText: 'Email',
-
-
-
                 labelStyle: TextStyle(
                   fontSize: 12,
                   // color: Colors.white.withOpacity(0.5),
@@ -123,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                 this.email = value;
 
               },
-              // validator: (value) => value.isEmpty ? 'Email is required' : validateEmail(value),
+              validator: (value) => value.isEmpty ? "Email is required" : null,
               //   validator: (value){
               //     String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
               //     RegExp regex = new RegExp(pattern);
@@ -168,7 +166,9 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 4,),
             GestureDetector(
               onTap: () {
-
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ResetPassword()
+                ));
               },
               child:  Container(
                 alignment: Alignment(1,0),
@@ -189,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 48,),
             GestureDetector(
               onTap: () {
-                print(email.trim());
+                // print(email);
                 if(checkFields()){
                   AuthService().signIn(email, password, context);
                 }
