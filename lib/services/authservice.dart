@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:signinapp/screens_ui/home_page.dart';
 import 'package:signinapp/screens_ui/login_page.dart';
+import 'package:signinapp/screens_ui/welcome_screen.dart';
 import 'package:signinapp/services/error_handler.dart';
 
 class AuthService{
@@ -15,7 +16,7 @@ class AuthService{
           return HomePage();
         }
         else {
-          return LoginPage();
+          return WelcomeScreen();
         }
       },
     );

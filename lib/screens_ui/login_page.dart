@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:signinapp/screens_ui/home_page.dart';
 import 'package:signinapp/screens_ui/reset_password.dart';
 import 'package:signinapp/screens_ui/signup_page.dart';
 import 'package:signinapp/services/authservice.dart';
@@ -192,6 +193,7 @@ class _LoginPageState extends State<LoginPage> {
                 // print(email);
                 if(checkFields()){
                   AuthService().signIn(email, password, context);
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
                 }
               },
               child: Container(
