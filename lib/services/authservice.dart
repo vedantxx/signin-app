@@ -26,8 +26,8 @@ class AuthService{
     await FirebaseAuth.instance.signOut();
   }
 
-  signIn(String email, String password, context) {
-    FirebaseAuth.instance.signInWithEmailAndPassword(email: email.trim(), password: password.trim()).then((val) {
+  signIn(String email, String password, context) async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(email: email.trim(), password: password.trim()).then((val) {
       print('sign in');
     }).catchError((e) {
       ErrorHandler().errorDialog(context, e);
